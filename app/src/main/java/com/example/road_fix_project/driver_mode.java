@@ -32,7 +32,7 @@ public class driver_mode extends AppCompatActivity implements OnMapReadyCallback
         markerOptions.position(latLng);
         markerOptions.title("서울역");
 
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker2));
         googleMap.addMarker(markerOptions);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f));
@@ -43,7 +43,7 @@ public class driver_mode extends AppCompatActivity implements OnMapReadyCallback
             public void onMapClick(@NonNull LatLng latLng) {
                 markerOptions.position(latLng);
 
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker2));
                 googleMap.addMarker(markerOptions);
             }
         });
