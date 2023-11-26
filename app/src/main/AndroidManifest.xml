@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,6 +17,12 @@
         android:theme="@style/Theme.Road_Fix_Project"
         tools:targetApi="31">
         <activity
+            android:name=".report_delete"
+            android:exported="false" />
+        <activity
+            android:name=".report_details_mode"
+            android:exported="false" />
+        <activity
             android:name=".mode_choice"
             android:exported="true">
             <intent-filter>
@@ -22,11 +31,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".driver_mode"></activity>
+        <activity
+            android:name=".report_edit"
+            android:exported="false"/>
+
+        <activity android:name=".driver_mode" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDoa9b5FBYQufcGBZ2OWUwxGpRJf4VNXpI"/>
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+            android:value="AIzaSyDoa9b5FBYQufcGBZ2OWUwxGpRJf4VNXpI" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

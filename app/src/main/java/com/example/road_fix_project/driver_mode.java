@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.location.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,6 +44,8 @@ public class driver_mode extends AppCompatActivity implements OnMapReadyCallback
         fetchCurrentLocation();
     }
 
+
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMapObj=googleMap;
@@ -53,7 +57,7 @@ public class driver_mode extends AppCompatActivity implements OnMapReadyCallback
         } catch(IOException e) {
             e.printStackTrace();
         }
-        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker2));
+        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.danger_marker));
         gMapObj.animateCamera(CameraUpdateFactory.newLatLng(latLong));
         gMapObj.animateCamera(CameraUpdateFactory.newLatLngZoom(latLong,15f));
         myMarker=gMapObj.addMarker(marker);
@@ -67,7 +71,16 @@ public class driver_mode extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void fetchCurrentLocation() {
-        if(ActivityCompat.checkSelfPermission(
+        // 서울역의 위도와 경도로 myLocation을 설정합니다.
+        myLocation = new Location("");
+        myLocation.setLatitude(37.555744);
+        myLocation.setLongitude(126.970431);
+
+        // 위치 업데이트를 요청하지 않고, 바로 지도를 로딩합니다.
+        SupportMapFragment mapFragment;
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(driver_mode.this);
+        /*if(ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
         )
@@ -88,7 +101,31 @@ public class driver_mode extends AppCompatActivity implements OnMapReadyCallback
             );
             return;
         }
-        Task<Location> task=fusedLocationProviderClient.getLastLocation();
+
+        LocationRequest locationRequest=LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationCallback locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        myLocation = location;
+                        SupportMapFragment mapFragment;
+                        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                        mapFragment.getMapAsync(driver_mode.this);
+                    }
+                }
+            }
+        };*/
+
+        //fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+        /*Task<Location> task=fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -99,6 +136,6 @@ public class driver_mode extends AppCompatActivity implements OnMapReadyCallback
                     mapFragment.getMapAsync(driver_mode.this);
                 }
             }
-        });
+        });*/
     }
 }
