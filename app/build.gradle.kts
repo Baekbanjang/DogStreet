@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "kr.ac.mmu"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "kr.ac.mmu"
