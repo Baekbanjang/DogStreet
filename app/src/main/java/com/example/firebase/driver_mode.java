@@ -6,6 +6,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,24 +25,53 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class driver_mode extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap gMapObj;
     FusedLocationProviderClient fusedLocationProviderClient;
     Marker myMarker;
     Location myLocation;
+    DatabaseReference dbRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_mode);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+            // Use this uid to store/retrieve user-specific data.
+        }
+
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(this);
+        dbRef = FirebaseDatabase.getInstance().getReference("Locations");
         fetchCurrentLocation();
+
+        Button immediate = (Button)findViewById(R.id.immediate_repot_But);
+        immediate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(myLocation != null && user != null) {
+                    Map<String, Object> locationData = new HashMap<>();
+                    locationData.put("latitude", myLocation.getLatitude());
+                    locationData.put("longitude", myLocation.getLongitude());
+                    dbRef.child(user.getUid()).push().setValue(locationData);
+                }
+            }
+        });
     }
+
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
