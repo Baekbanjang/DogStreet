@@ -45,6 +45,7 @@ public class take_picture extends AppCompatActivity {
         setContentView(R.layout.take_picture);
 
         Button take_photo = (Button) findViewById(R.id.take_photo);
+        Button location = (Button)findViewById(R.id.location);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -87,6 +88,13 @@ public class take_picture extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(take_picture.this, exact_location.class);
+                startActivity(intent);
             }
         });
     }
@@ -132,4 +140,5 @@ public class take_picture extends AppCompatActivity {
                     });
         }
     }
+
 }
