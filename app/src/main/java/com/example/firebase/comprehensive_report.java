@@ -20,15 +20,20 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class comprehensive_report extends AppCompatActivity {
     private ImageView mImageView;
     private TextView mTextViewAccidentType;
     private TextView mTextViewLocation;
+    private static final String TAG = "comprehensive_report";
 
 
     @Override
@@ -40,6 +45,7 @@ public class comprehensive_report extends AppCompatActivity {
         String selectedType = sharedPreferences.getString("selectedType", "");
         String photoPath = sharedPreferences.getString("photoPath", "");
         String locationStr = sharedPreferences.getString("location", "");
+        int selectedMode = sharedPreferences.getInt("selectedMode", -1);
         mImageView = findViewById(R.id.imageView);
         mTextViewAccidentType = findViewById(R.id.textView_accident_type);
         mTextViewLocation = findViewById(R.id.textView_coordinates);
@@ -48,6 +54,17 @@ public class comprehensive_report extends AppCompatActivity {
         mTextViewAccidentType.setText(selectedType);
         mTextViewLocation.setText("위치: " + locationStr);
         Button report_Complete= (Button)findViewById(R.id.report_complete);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("accidents");
+        Map<String, Object> accident = new HashMap<>();
+        long currentTime = System.currentTimeMillis();
+        accident.put("location", locationStr);
+        accident.put("time", currentTime);
+        accident.put("mode", selectedMode);
+        accident.put("type", selectedType);
+        accident.put("photoPath", photoPath);
+
         final TextToSpeech[] tts = new TextToSpeech[1];
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -76,6 +93,21 @@ public class comprehensive_report extends AppCompatActivity {
         report_Complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myRef.push().setValue(accident)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // Write was successful!
+                                Log.d(TAG, "Successfully wrote to database.");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Write failed
+                                Log.w(TAG, "Failed to write to database.", e);
+                            }
+                        });
                 String message = "신고되었습니다";
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
