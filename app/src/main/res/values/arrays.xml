@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="report_types">
+        <item>선택 없음</item>
+        <item>로드킬,낙석</item>
+        <item>배수시설 불량</item>
+        <item>도로 시설물 불량</item>
+        <item>싱크홀</item>
+        <item>포트홀</item>
+        <item>기타</item>
+    </string-array>
+</resources>

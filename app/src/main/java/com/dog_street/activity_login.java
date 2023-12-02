@@ -41,7 +41,7 @@ public class activity_login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 회원가입 버튼 클릭 시 회원가입 화면으로 이동
-                Intent intent = new Intent(activity_login.this, activity_signup.class);
+                Intent intent = new Intent(activity_login.this, report_edit.class);
                 startActivity(intent);
             }
         });
@@ -68,7 +68,7 @@ public class activity_login extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //사용자 로그인 경우 운전자/보행자 선택 화면 이동 예정(다음 화면 저장 시 수정 예정)
-                    Intent intent = new Intent(activity_login.this,activity_signup.class);
+                    Intent intent = new Intent(activity_login.this,mode_choice.class);
                     startActivity(intent);
                     finish();
                 } else {
