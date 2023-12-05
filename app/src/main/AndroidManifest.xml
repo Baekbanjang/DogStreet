@@ -16,6 +16,9 @@
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -67,7 +70,6 @@
             android:required="false" />
 
         <receiver android:name=".GeofenceBroadcastReceiver" />
-
     </application>
 
 </manifest>
