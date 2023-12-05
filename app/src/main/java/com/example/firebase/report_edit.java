@@ -2,6 +2,7 @@ package com.example.firebase;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -86,6 +87,8 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
         Spinner spinner = findViewById(R.id.spinner_report_type);
 
 
+
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.report_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -149,11 +152,13 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
                         // Error occurred while creating the File
                     }
                     if (photoFile != null) {
-                        photoURI = FileProvider.getUriForFile(report_edit.this, "com.dog_street", photoFile);
+                        photoURI = FileProvider.getUriForFile(report_edit.this, "com.example.firebase", photoFile);
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
                     }
                 }
+
             }
         });
 
@@ -162,6 +167,7 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 Intent intent = new Intent(report_edit.this, edit_exact_location.class);
                 startActivityForResult(intent, LOCATION_REQUEST_CODE);
+
             }
         });
 
@@ -169,6 +175,11 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 // 수정하기 버튼 클릭 시 동작 처리
+                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                String selectedLocation = sharedPreferences.getString("selectedLocation", "");
+                reportData.put("location", selectedLocation);
+                String photoPath = sharedPreferences.getString("photoPath", "");
+                reportData.put("photoPath", photoPath);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     String uid = user.getUid();
@@ -189,6 +200,7 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             uploadImage();
         }
+
     }
 
     private File createImageFile() throws IOException {
@@ -208,7 +220,10 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                // Handle successful upload
+                                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                myEdit.putString("photoPath", "images/" + uid + "/" + photoURI.getLastPathSegment());
+                                myEdit.commit();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
