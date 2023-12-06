@@ -19,16 +19,17 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d("GeofenceReceiver", "Geofence event received!");
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-        if (geofencingEvent.hasError()) {
-            String errorMessage = GeofenceStatusCodes.getStatusCodeString(geofencingEvent.getErrorCode());
-            Log.e("GeofenceReceiver", errorMessage);
+        if (geofencingEvent == null) {
+            Log.d("GeofenceReceiver", "GeofencingEvent is null");
             return;
         }
 
         int geofenceTransition = GeofencingEvent.fromIntent(intent).getGeofenceTransition();
+        Intent localIntent = new Intent();
 
         // Geofence에 진입했을 때 알림을 발생시킵니다.
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER || geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+            localIntent.setAction("GeofenceEnterEvent");  // 진입 이벤트를 나타내는 Action을 설정합니다.
             int notificationId = 0; // 알림의 고유 식별자를 선언합니다.
 
             // 알림을 생성합니다. CHANNEL_ID는 알림 채널의 ID입니다.
@@ -39,8 +40,8 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     .setPriority(NotificationCompat.PRIORITY_MAX);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            Intent localIntent = new Intent("GeofenceEvent");
-            LocalBroadcastManager.getInstance(context).sendBroadcast(localIntent);
+            //Intent localIntent = new Intent("GeofenceEvent");
+            //LocalBroadcastManager.getInstance(context).sendBroadcast(localIntent);
 
             // 알림을 발생시킵니다. notificationId는 알림의 ID입니다.
             //noinspection MissingPermission
@@ -48,10 +49,9 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             Log.d("GeofenceReceiver", "Notification sent!");
         }
 
-        //noinspection MissingPermission
-        //notificationManager.notify(notificationId, builder.build());
-
-        //noinspection MissingPermission
-        //notificationManager.notify(200, builder.build());
+        else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+            localIntent.setAction("GeofenceExitEvent");
+        }
+        LocalBroadcastManager.getInstance(context).sendBroadcast(localIntent);
     }
 }
