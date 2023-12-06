@@ -40,8 +40,6 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                     .setPriority(NotificationCompat.PRIORITY_MAX);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            //Intent localIntent = new Intent("GeofenceEvent");
-            //LocalBroadcastManager.getInstance(context).sendBroadcast(localIntent);
 
             // 알림을 발생시킵니다. notificationId는 알림의 ID입니다.
             //noinspection MissingPermission

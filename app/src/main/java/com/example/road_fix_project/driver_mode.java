@@ -137,6 +137,18 @@ public class driver_mode extends AppCompatActivity implements OnMapReadyCallback
                     locationData.put("type", typeValue); // typeValue는 해당 type의 값을 설정해야 합니다.
 
                     dbRef.child(user.getUid()).push().setValue(locationData);
+
+                    // "즉시 신고되었습니다." 텍스트를 보이게 합니다.
+                    TextView immediateReportText = findViewById(R.id.immediate_report_text);
+                    immediateReportText.setVisibility(View.VISIBLE);
+
+                    // 5초 후에 "즉시 신고되었습니다." 텍스트를 숨깁니다.
+                    immediateReportText.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            immediateReportText.setVisibility(View.GONE);
+                        }
+                    }, 5000);  // 5000 밀리초(=5초) 후에 실행합니다.
                 }
             }
         });
