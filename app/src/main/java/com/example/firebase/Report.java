@@ -1,18 +1,28 @@
 package com.example.firebase;
 
 public class Report {
-    public String type;
-    public long time;
+    String location;
     public int mode;
+    String photoPath;
+    public long time;
+    public String type;
     private String userId;
     private String key;
     public Report() { }
 
 
-    public Report(String type,long time, int mode) {
-        this.type = type;
-        this.time = time;
+    public Report(String location, int mode, String photoPath, long time, String type) {
+        this.location = location;
         this.mode = mode;
+        this.photoPath = photoPath;
+        this.time = time;
+        this.type = type;
+    }
+    public String getLocation(){
+        return location;
+    }
+    public String getPhotoPath(){
+        return photoPath;
     }
     public String getType() {
         return type;

@@ -1,6 +1,8 @@
 package com.example.firebase;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -87,6 +89,8 @@ public class exact_location extends AppCompatActivity implements OnMapReadyCallb
 
                     dbRef.child(user.getUid()).push().setValue(locationData);
                 }
+                Intent intent = new Intent(exact_location.this, comprehensive_report.class);
+                startActivity(intent);
             }
         });
     }
@@ -200,6 +204,11 @@ public class exact_location extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onSuccess(Location location) {
                 if(location!=null) {
+                    String locationStr = location.getLatitude() + "_" + location.getLongitude();
+                    SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                    myEdit.putString("location", locationStr);
+                    myEdit.commit();
                     myLocation=location;
                     SupportMapFragment mapFragment;
                     mapFragment=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);

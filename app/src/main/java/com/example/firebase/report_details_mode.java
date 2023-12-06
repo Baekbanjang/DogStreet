@@ -48,13 +48,19 @@ public class report_details_mode extends AppCompatActivity {
             // 사용자의 신고 내역을 읽기 위한 참조를 생성합니다.
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("accidents").child(userId);
 
-            // ValueEventListener를 추가하여 데이터 변경을 감지합니다.
+//             ValueEventListener를 추가하여 데이터 변경을 감지합니다.
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     reportList.clear();
                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                        Report report = childSnapshot.getValue(Report.class);
+                        String location = childSnapshot.child("location").getValue(String.class);
+                        String photoPath = childSnapshot.child("photoPath").getValue(String.class);
+                        String type = childSnapshot.child("type").getValue(String.class);
+                        long time = childSnapshot.child("time").getValue(long.class);
+                        int mode = childSnapshot.child("mode").getValue(int.class);
+
+                        Report report = new Report(location, mode, photoPath, time, type);
                         report.setKey(childSnapshot.getKey());
                         reportList.add(report);
                     }
@@ -71,10 +77,17 @@ public class report_details_mode extends AppCompatActivity {
             report_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectedItemKey = adapter.getSelectedItemKey();
+                    Report r = adapter.getSelectedItemKey();
+                    selectedItemKey = r.getKey();
                     if (selectedItemKey != null) { // 선택된 아이템이 있으면
                         Intent intent = new Intent(report_details_mode.this, report_edit.class);
                         intent.putExtra("selectedItemKey", selectedItemKey);
+                        intent.putExtra("location", r.getLocation());
+                        intent.putExtra("mode", String.valueOf(r.getMode()));
+                        intent.putExtra("photoPath", r.getPhotoPath());
+                        intent.putExtra("time", String.valueOf(r.getTime()));
+                        intent.putExtra("type", r.getType());
+
                         startActivity(intent);
                     }
                 }
@@ -82,7 +95,7 @@ public class report_details_mode extends AppCompatActivity {
             report_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String selectedItemKey = adapter.getSelectedItemKey(); // 선택된 아이템의 키를 가져옵니다.
+                    String selectedItemKey = adapter.getSelectedItemKey().getKey(); // 선택된 아이템의 키를 가져옵니다.
                     if (selectedItemKey != null) { // 선택된 아이템이 있으면
                         mDatabase.child(selectedItemKey).removeValue();
                     }

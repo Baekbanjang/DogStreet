@@ -2,6 +2,7 @@ package com.example.firebase;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -129,7 +130,10 @@ public class take_picture extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Task completed successfully
+                            SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                            myEdit.putString("photoPath", "images/" + uid + "/" + photoURI.getLastPathSegment());
+                            myEdit.commit();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

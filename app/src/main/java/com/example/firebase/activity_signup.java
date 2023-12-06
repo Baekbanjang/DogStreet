@@ -59,7 +59,6 @@ public class activity_signup extends AppCompatActivity {
                     Intent intent = new Intent(activity_signup.this, activity_login.class);
                     startActivity(intent);
                 } else {
-
                     // 이메일 또는 비밀번호 작성 안할 시 아래 메시지 호출
                     Toast.makeText(activity_signup.this, "계정과 비밀번호를 입력하세요.", Toast.LENGTH_LONG).show();
                 }
@@ -84,7 +83,6 @@ public class activity_signup extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             //생성 성공 시 아래 메시지 표시
                             Toast.makeText(activity_signup.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
                             finish();

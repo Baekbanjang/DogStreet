@@ -65,6 +65,7 @@
             android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:backgroundTint="#FFC107"
+            android:onClick="onClick"
             android:text="신고내역 확인"
             android:textColor="@color/black"
             android:textSize="30sp"

@@ -1,5 +1,6 @@
 package com.example.firebase;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,9 +60,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
     public int getSelectedPos() {
         return selectedPos;
     }
-    public String getSelectedItemKey() {
+    public Report getSelectedItemKey() {
         if (selectedPos != RecyclerView.NO_POSITION) {
-            return reportList.get(selectedPos).getKey(); // 선택된 아이템의 키를 반환합니다.
+            return reportList.get(selectedPos); // 선택된 아이템의 키를 반환합니다.
         } else {
             return null;
         }

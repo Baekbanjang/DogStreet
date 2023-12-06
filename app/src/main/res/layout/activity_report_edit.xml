@@ -21,22 +21,28 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="196dp"
             android:layout_height="wrap_content"
             android:text="1. 사고 유형 :"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="30sp" />
 
-        <TextView
-            android:id="@+id/textView_accident_type"
+        <Spinner
+            android:id="@+id/spinner_report_type"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:entries="@array/report_types"
+            android:prompt="@string/select_default"
+            android:textSize="20sp" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,22 +50,32 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="2. 사진 첨부 :"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="30sp" />
 
+        <ImageButton
+            android:id="@+id/choose_picture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/edit_photo" />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="439dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:contentDescription="@string/accident_image"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,16 +83,33 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView_coordinates"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:text="3. 위치 설정 :"
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textSize="30sp" />
+
+        <ImageButton
+            android:id="@+id/choose_location"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/edit_location" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        android:layout_weight="1" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,13 +117,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/report_complete"
+            android:id="@+id/report_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#FF0000"
-            android:onClick="onClick"
-            android:text="신고하기"
+            android:text="수정하기"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold" />
