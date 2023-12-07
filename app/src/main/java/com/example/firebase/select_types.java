@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class select_types_MainActivity extends AppCompatActivity {
+public class select_types extends AppCompatActivity {
     private String selectedType;
 
     @Override
@@ -39,10 +39,10 @@ public class select_types_MainActivity extends AppCompatActivity {
         pothole.setOnClickListener(typeButtonClickListener);
         etc.setOnClickListener(typeButtonClickListener);
 
-        select_type.setOnClickListener(new View.OnClickListener() {
+        select_type.setOnClickListener(new View.OnClickListener() { //사고유형을 선택하고 난 뒤 해당유형을 결정시
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(select_types_MainActivity.this, take_picture.class);
+                Intent intent = new Intent(select_types.this, take_picture.class);
                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("selectedType", selectedType);

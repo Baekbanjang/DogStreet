@@ -47,16 +47,17 @@ public class edit_exact_location extends AppCompatActivity implements OnMapReady
         mapFragment.getMapAsync(this);
 
         Button location_select = findViewById(R.id.location_select);
-        location_select.setOnClickListener(new View.OnClickListener() {
+        location_select.setOnClickListener(new View.OnClickListener() { //위치 선택하기 버튼
             @Override
             public void onClick(View view) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (centerMarker != null) {
-                    LatLng position = centerMarker.getPosition();
+                    LatLng position = centerMarker.getPosition(); //마커의 위치를 저장
 
+                    //위치 정보를 다른 클래스에서 공유할 수 있도록 설정
                     SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                     SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                    myEdit.putString("selectedLocation", position.latitude + "," + position.longitude);
+                    myEdit.putString("selectedLocation", position.latitude + "_" + position.longitude);
                     myEdit.apply();
 
                     Intent intent = new Intent(edit_exact_location.this, report_edit.class);

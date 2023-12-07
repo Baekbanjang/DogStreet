@@ -19,7 +19,7 @@ public class mode_choice extends AppCompatActivity {
         Button driveModeButton=(Button) findViewById(R.id.driveModeBut);
         Button pedestrianModeButton=(Button) findViewById(R.id.pedestrianModeBut);
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-        driveModeButton.setOnClickListener(new View.OnClickListener() {
+        driveModeButton.setOnClickListener(new View.OnClickListener() { //운전자 모드 버튼
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(mode_choice.this, driver_mode.class);
@@ -29,10 +29,10 @@ public class mode_choice extends AppCompatActivity {
                 myEdit.commit();
             }
         });
-        pedestrianModeButton.setOnClickListener(new View.OnClickListener() {
+        pedestrianModeButton.setOnClickListener(new View.OnClickListener() { //보행자 모드 버튼
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(mode_choice.this, select_types_MainActivity.class);
+                Intent intent=new Intent(mode_choice.this, select_types.class);
                 startActivity(intent);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putInt("selectedMode", 0); // 보행자 모드 선택 시 0 저장

@@ -86,14 +86,11 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
         chooseLocationButton = findViewById(R.id.choose_location);
         Spinner spinner = findViewById(R.id.spinner_report_type);
 
-
-
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.report_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //사고유형
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedType = parent.getItemAtPosition(position).toString();
@@ -107,8 +104,8 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        double latitude = intent.getDoubleExtra("latitude", 0);
-        double longitude = intent.getDoubleExtra("longitude", 0);
+
+
         String selectedItemKey = intent.getStringExtra("selectedItemKey");
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
@@ -140,7 +137,7 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        choosePictureButton.setOnClickListener(new View.OnClickListener() {
+        choosePictureButton.setOnClickListener(new View.OnClickListener() { //사진 찍기
             @Override
             public void onClick(View v) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -162,7 +159,7 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        chooseLocationButton.setOnClickListener(new View.OnClickListener() {
+        chooseLocationButton.setOnClickListener(new View.OnClickListener() { //위치 설정하기
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(report_edit.this, edit_exact_location.class);
@@ -171,9 +168,9 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        reportEditButton.setOnClickListener(new View.OnClickListener() {
+        reportEditButton.setOnClickListener(new View.OnClickListener() { //수정하기
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //번경사항들을 원래 값들에 덮어 씌움, 수정되지 않은것은 불러왔던 값 그대로
                 // 수정하기 버튼 클릭 시 동작 처리
                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                 String selectedLocation = sharedPreferences.getString("selectedLocation", "");
@@ -198,6 +195,7 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            setImageView();
             uploadImage();
         }
 
@@ -210,6 +208,18 @@ public class report_edit extends AppCompatActivity implements OnMapReadyCallback
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         return image;
     }
+    private void setImageView() { //찍었던 사진을 보여줌
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            imageView.setImageBitmap(rotatedBitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void uploadImage() {
         if (photoURI != null) {

@@ -68,7 +68,7 @@ public class exact_location extends AppCompatActivity implements OnMapReadyCallb
         fetchCurrentLocation();
 
         Button location_select=(Button)findViewById(R.id.location_select);
-        location_select.setOnClickListener(new View.OnClickListener() {
+        location_select.setOnClickListener(new View.OnClickListener() { //위치 선택하기
             @Override
             public void onClick(View view) {
                 FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
@@ -123,8 +123,8 @@ public class exact_location extends AppCompatActivity implements OnMapReadyCallb
                         // 신고 위치에 마커를 추가합니다.
                         LatLng latLng = new LatLng(latitude, longitude);
                         MarkerOptions marker = new MarkerOptions();
-                        marker.position(latLng).title("도로 파손 지역");
-                        // marker.snippet(getAddress(latitude, longitude));  // <-- 주소 정보를 표시하려면 이 줄의 주석을 해제하세요.
+                        marker.position(latLng).title("신고 지역");
+                        // marker.snippet(getAddress(latitude, longitude));
                         gMapObj.addMarker(marker);
                     }
                 }
@@ -150,11 +150,7 @@ public class exact_location extends AppCompatActivity implements OnMapReadyCallb
         centerMarker.setPosition(center);
     }
 
-    private String getAddress(double latitude, double longitude) throws IOException {
-        Geocoder geocoder=new Geocoder(this, Locale.getDefault());
-        List<Address> addressList=geocoder.getFromLocation(latitude, longitude, 1);
-        return addressList.get(0).getAddressLine(0).toString();
-    }
+
 
     private void fetchCurrentLocation() {
         if(ActivityCompat.checkSelfPermission(

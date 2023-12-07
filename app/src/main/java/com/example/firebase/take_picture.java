@@ -56,7 +56,7 @@ public class take_picture extends AppCompatActivity {
         }
 
 
-        take_photo.setOnClickListener(new View.OnClickListener() {
+        take_photo.setOnClickListener(new View.OnClickListener() { //사진 찍기
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(take_picture.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -64,7 +64,7 @@ public class take_picture extends AppCompatActivity {
                     return;
                 }
 
-                fusedLocationClient.getLastLocation()
+                fusedLocationClient.getLastLocation() //사진에 위치 정보가 들어가는지 실험
                         .addOnSuccessListener(take_picture.this, new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
@@ -111,7 +111,7 @@ public class take_picture extends AppCompatActivity {
 
     private File createImageFile(String location) throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_" + "위치 정보 : " + location + "_";
+        String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,

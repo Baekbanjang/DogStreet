@@ -37,11 +37,14 @@ public class comprehensive_report extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comprehensive_report);
+
+        //앞에서 선택했던 유형과 사진 위치 정보의 값 가져옴
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         String selectedType = sharedPreferences.getString("selectedType", "");
         String photoPath = sharedPreferences.getString("photoPath", "");
         String locationStr = sharedPreferences.getString("location", "");
         int selectedMode = sharedPreferences.getInt("selectedMode", -1);
+
         mImageView = findViewById(R.id.imageView);
         mTextViewAccidentType = findViewById(R.id.textView_accident_type);
         mTextViewLocation = findViewById(R.id.textView_coordinates);
@@ -54,6 +57,7 @@ public class comprehensive_report extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("accidents");
         Map<String, Object> accident = new HashMap<>();
         long currentTime = System.currentTimeMillis();
+        //accident에 위치, 시간, 모드, 유형, 사진 삽입
         accident.put("location", locationStr);
         accident.put("time", currentTime);
         accident.put("mode", selectedMode);
@@ -83,7 +87,7 @@ public class comprehensive_report extends AppCompatActivity {
                 }
             });
         }
-        report_Complete.setOnClickListener(new View.OnClickListener() {
+        report_Complete.setOnClickListener(new View.OnClickListener() { //신고하기 버튼
             @Override
             public void onClick(View v) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
     android:orientation="vertical"
-    tools:context=".select_types_MainActivity">
+    tools:context=".select_types">
 
     <LinearLayout
         android:layout_width="388dp"
